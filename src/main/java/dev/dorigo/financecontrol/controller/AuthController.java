@@ -1,9 +1,14 @@
 package dev.dorigo.financecontrol.controller;
 
 import dev.dorigo.financecontrol.controller.request.LoginRequestDTO;
+import dev.dorigo.financecontrol.controller.request.UserRequest;
 import dev.dorigo.financecontrol.controller.response.LoginResponseDTO;
+import dev.dorigo.financecontrol.controller.response.UserResponse;
 import dev.dorigo.financecontrol.domain.user.User;
 import dev.dorigo.financecontrol.infra.security.TokenService;
+import dev.dorigo.financecontrol.mappers.UserMapper;
+import dev.dorigo.financecontrol.repository.UserRepository;
+import dev.dorigo.financecontrol.service.UserService;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
@@ -26,6 +31,8 @@ public class AuthController {
     private final AuthenticationManager authenticationManager;
 
     private final TokenService tokenService;
+    private final UserService userService;
+    private final UserRepository userRepository;
 
     @PostMapping("/login")
     public ResponseEntity<LoginResponseDTO> login(@RequestBody @Valid LoginRequestDTO request) {
@@ -38,5 +45,14 @@ public class AuthController {
         } catch (BadCredentialsException e){
             return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body(new LoginResponseDTO(e.getMessage()));
         }
+    }
+
+    @PostMapping("/register")
+    public ResponseEntity<UserResponse> register(@RequestBody @Valid UserRequest request){
+        if(this.userRepository.findByEmail(request.email()).isPresent()){
+            return ResponseEntity.badRequest().build();
+        }
+        User savedUser = userService.save(UserMapper.toUser(request));
+        return ResponseEntity.status(HttpStatus.CREATED).body(UserMapper.toUserResponse(savedUser));
     }
 }

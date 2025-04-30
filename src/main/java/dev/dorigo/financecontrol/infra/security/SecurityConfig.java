@@ -27,7 +27,9 @@ public class SecurityConfig {
                 .csrf(csrf -> csrf.disable())
                 .sessionManagement(session -> session.sessionCreationPolicy(SessionCreationPolicy.STATELESS))
                 .authorizeHttpRequests(authorizeRequests ->
-                       authorizeRequests.requestMatchers(new AntPathRequestMatcher("/auth/login", "POST")).permitAll()
+                       authorizeRequests
+                               .requestMatchers(new AntPathRequestMatcher("/auth/login", "POST")).permitAll()
+                               .requestMatchers(new AntPathRequestMatcher("/auth/register", "POST")).permitAll()
                         .anyRequest().authenticated()
                 )
                 .addFilterBefore(securityFilter, UsernamePasswordAuthenticationFilter.class)
