@@ -37,6 +37,7 @@ public class User implements UserDetails {
     @Column(name = "is_active")
     private boolean isActive = true;
 
+    @Enumerated(EnumType.STRING)
     private UserRole role = UserRole.USER;
 
     @CreationTimestamp
