@@ -34,8 +34,8 @@ public class User implements UserDetails {
     @Column(nullable = false)
     private String password;
 
-    @Column(name = "is_active")
-    private boolean isActive = true;
+    @Column(name = "is_Active")
+    private boolean active = true;
 
     @Enumerated(EnumType.STRING)
     private UserRole role = UserRole.USER;
