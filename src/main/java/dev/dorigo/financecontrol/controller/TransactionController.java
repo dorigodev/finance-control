@@ -8,10 +8,9 @@ import dev.dorigo.financecontrol.service.TransactionService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
+
+import java.util.List;
 
 @RestController
 @RequestMapping("/transaction")
@@ -24,6 +23,16 @@ public class TransactionController {
     public ResponseEntity<TransactionResponse> save(@RequestBody TransactionRequest transactionRequest) {
         Transaction saved = transactionService.save(TransactionMapper.toTransaction(transactionRequest));
         return ResponseEntity.status(HttpStatus.CREATED).body(TransactionMapper.toResponse(saved));
+    }
+
+    @GetMapping()
+    public ResponseEntity<List<TransactionResponse>> getTransactions() {
+        return ResponseEntity.ok(transactionService.getAll().stream().map(TransactionMapper::toResponse).toList());
+    }
+
+    @GetMapping("/{id}")
+    public ResponseEntity<TransactionResponse> getTransactionById(@PathVariable Long id) {
+        return ResponseEntity.ok(TransactionMapper.toResponse(transactionService.getById(id)));
     }
 }
 
