@@ -21,6 +21,7 @@ public class TransactionService {
     private final TransactionRepository repository;
     private final AuthService authService;
     private final UserRepository userRepository;
+    private final TransactionRepository transactionRepository;
 
 
     public Transaction save(Transaction transaction) {
@@ -88,5 +89,11 @@ public class TransactionService {
         );
     }
 
+    public BigDecimal calcularSaldo(){
+        Long userId = authService.getAuhenticatedUser().getId();
+        BigDecimal expense = transactionRepository.somarPorTipo(Type.EXPENSE, userId);
+        BigDecimal revenue = transactionRepository.somarPorTipo(Type.REVENUE, userId);
+        return revenue.subtract(expense);
+    }
 
 }

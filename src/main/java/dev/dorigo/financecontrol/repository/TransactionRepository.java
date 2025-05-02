@@ -32,4 +32,10 @@ public interface TransactionRepository extends JpaRepository<Transaction, Long> 
             @Param("valorMax") BigDecimal valorMax,
             @Param("userId") Long userId
     );
+
+    @Query("SELECT COALESCE(SUM(t.amount), 0) FROM Transaction t WHERE t.type = :tipo AND t.user.id = :userID" )
+    BigDecimal somarPorTipo(
+            @Param("tipo") Type tipo,
+            @Param("userID") Long userId);
+
 }

@@ -73,6 +73,12 @@ public class TransactionController {
         var resp = transactionService.buscarTransacoesComFiltro(dataInicio, dataFim, tipo, valorMin, valorMax);
         return resp.stream().map(TransactionMapper::toResponse).collect(Collectors.toList());
     }
+
+    @GetMapping("/saldo")
+    public ResponseEntity<BigDecimal> getSaldo() {
+        BigDecimal saldo = transactionService.calcularSaldo();
+        return ResponseEntity.ok(saldo);
+    }
 }
 
 
