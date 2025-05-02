@@ -1,5 +1,6 @@
 package dev.dorigo.financecontrol.service;
 
+import dev.dorigo.financecontrol.controller.request.TransactionRequest;
 import dev.dorigo.financecontrol.domain.transaction.Transaction;
 import dev.dorigo.financecontrol.repository.TransactionRepository;
 import dev.dorigo.financecontrol.repository.UserRepository;
@@ -45,14 +46,35 @@ public class TransactionService {
     }
 
     public Transaction update(Long id, Transaction UpdateTransaction) {
-        var transaction = repository.findById(id).orElseThrow(() -> new ResponseStatusException(HttpStatus.FORBIDDEN));
+        var transaction = repository.findById(id).orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND));
         if(!transaction.getUser().equals(authService.getAuhenticatedUser())){
-            throw new ResponseStatusException(HttpStatus.NOT_FOUND);
+            throw new ResponseStatusException(HttpStatus.FORBIDDEN);
         }
         transaction.setDescription(UpdateTransaction.getDescription());
         transaction.setAmount(UpdateTransaction.getAmount());
         transaction.setDate(UpdateTransaction.getDate());
         transaction.setType(UpdateTransaction.getType());
+        return repository.save(transaction);
+    }
+
+    public Transaction partialUpdate(Long id, TransactionRequest UpdateTransaction) {
+        var transaction = repository.findById(id).orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND));
+        if(!transaction.getUser().equals(authService.getAuhenticatedUser())){
+            throw new ResponseStatusException(HttpStatus.FORBIDDEN);
+        }
+
+        if (UpdateTransaction.description() != null) {
+            transaction.setDescription(UpdateTransaction.description());
+        }
+        if (UpdateTransaction.amount() != null) {
+            transaction.setAmount(UpdateTransaction.amount());
+        }
+        if (UpdateTransaction.date() != null) {
+            transaction.setDate(UpdateTransaction.date());
+        }
+        if (UpdateTransaction.type() != null) {
+            transaction.setType(UpdateTransaction.type());
+        }
         return repository.save(transaction);
     }
 }

@@ -52,6 +52,11 @@ public class TransactionController {
        return ResponseEntity.ok(TransactionMapper.toResponse(transaction));
     }
 
+    @PatchMapping("/{id}")
+    public ResponseEntity<TransactionResponse> updateTransaction(@PathVariable Long id, @RequestBody TransactionRequest transactionRequest) {
+        Transaction transaction = transactionService.partialUpdate(id, transactionRequest );
+        return ResponseEntity.ok(TransactionMapper.toResponse(transaction));
+    }
 }
 
 
