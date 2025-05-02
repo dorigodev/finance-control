@@ -8,6 +8,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.web.server.ResponseStatusException;
 
 import java.util.List;
+import java.util.Optional;
 
 @Service
 @RequiredArgsConstructor
@@ -32,5 +33,13 @@ public class TransactionService {
             throw new ResponseStatusException(HttpStatus.NOT_FOUND);
         }
         return transaction;
+    }
+
+    public void deleteById(Long id) {
+        var transaction = repository.findById(id).orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND));
+        if(!transaction.getUser().equals(authService.getAuhenticatedUser())) {
+            throw new ResponseStatusException(HttpStatus.NOT_FOUND);
+        }
+        repository.deleteById(id);
     }
 }

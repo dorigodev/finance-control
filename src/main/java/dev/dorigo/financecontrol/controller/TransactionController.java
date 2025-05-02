@@ -11,6 +11,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
+import java.util.Optional;
 
 @RestController
 @RequestMapping("/transaction")
@@ -33,6 +34,16 @@ public class TransactionController {
     @GetMapping("/{id}")
     public ResponseEntity<TransactionResponse> getTransactionById(@PathVariable Long id) {
         return ResponseEntity.ok(TransactionMapper.toResponse(transactionService.getById(id)));
+    }
+
+    @DeleteMapping("/{id}")
+    public ResponseEntity<Void> deleteTransactionById(@PathVariable Long id) {
+        Optional<Transaction> optTransaction = Optional.ofNullable(transactionService.getById(id));
+        if (optTransaction.isPresent()) {
+            transactionService.deleteById(id);
+            return ResponseEntity.noContent().build();
+        }
+        return ResponseEntity.notFound().build();
     }
 }
 
