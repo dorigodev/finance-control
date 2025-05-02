@@ -6,12 +6,16 @@ import dev.dorigo.financecontrol.domain.transaction.Transaction;
 import dev.dorigo.financecontrol.mappers.TransactionMapper;
 import dev.dorigo.financecontrol.service.TransactionService;
 import lombok.RequiredArgsConstructor;
+import org.springframework.format.annotation.DateTimeFormat;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import java.math.BigDecimal;
+import java.time.LocalDate;
 import java.util.List;
 import java.util.Optional;
+import java.util.stream.Collectors;
 
 @RestController
 @RequestMapping("/transaction")
@@ -57,6 +61,21 @@ public class TransactionController {
         Transaction transaction = transactionService.partialUpdate(id, transactionRequest );
         return ResponseEntity.ok(TransactionMapper.toResponse(transaction));
     }
+
+    @GetMapping("/filter")
+    public List<TransactionResponse> buscarFiltradas(
+            @RequestParam(required = false) @DateTimeFormat(iso = DateTimeFormat.ISO.DATE) LocalDate dataInicio,
+            @RequestParam(required = false) @DateTimeFormat(iso = DateTimeFormat.ISO.DATE) LocalDate dataFim,
+            @RequestParam(required = false) String tipo,
+            @RequestParam(required = false) BigDecimal valorMin,
+            @RequestParam(required = false) BigDecimal valorMax
+    ) {
+        var resp = transactionService.buscarTransacoesComFiltro(dataInicio, dataFim, tipo, valorMin, valorMax);
+        return resp.stream().map(TransactionMapper::toResponse).collect(Collectors.toList());
+    }
 }
+
+
+
 
 

@@ -2,6 +2,7 @@ package dev.dorigo.financecontrol.service;
 
 import dev.dorigo.financecontrol.controller.request.TransactionRequest;
 import dev.dorigo.financecontrol.domain.transaction.Transaction;
+import dev.dorigo.financecontrol.domain.transaction.Type;
 import dev.dorigo.financecontrol.repository.TransactionRepository;
 import dev.dorigo.financecontrol.repository.UserRepository;
 import lombok.RequiredArgsConstructor;
@@ -9,6 +10,8 @@ import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
 import org.springframework.web.server.ResponseStatusException;
 
+import java.math.BigDecimal;
+import java.time.LocalDate;
 import java.util.List;
 
 @Service
@@ -77,4 +80,13 @@ public class TransactionService {
         }
         return repository.save(transaction);
     }
+
+    public List<Transaction> buscarTransacoesComFiltro(LocalDate dataInicio, LocalDate dataFim, String tipoStr, BigDecimal valorMin, BigDecimal valorMax) {
+        Long userId = authService.getAuhenticatedUser().getId();
+        Type tipo = tipoStr != null ? Type.valueOf(tipoStr.toUpperCase()) : null;
+        return repository.buscarFiltradas(dataInicio, dataFim, tipo, valorMin, valorMax, userId
+        );
+    }
+
+
 }
