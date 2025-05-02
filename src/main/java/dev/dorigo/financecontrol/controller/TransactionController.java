@@ -45,6 +45,13 @@ public class TransactionController {
         }
         return ResponseEntity.notFound().build();
     }
+
+    @PutMapping("/{id}")
+    public ResponseEntity<TransactionResponse> updateTransactionById(@PathVariable Long id, @RequestBody TransactionRequest transactionRequest) {
+        Transaction transaction = transactionService.update(id, TransactionMapper.toTransaction(transactionRequest));
+       return ResponseEntity.ok(TransactionMapper.toResponse(transaction));
+    }
+
 }
 
 
