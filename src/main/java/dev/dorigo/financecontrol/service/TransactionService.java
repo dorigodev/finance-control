@@ -3,6 +3,7 @@ package dev.dorigo.financecontrol.service;
 import dev.dorigo.financecontrol.controller.request.TransactionRequest;
 import dev.dorigo.financecontrol.domain.transaction.Transaction;
 import dev.dorigo.financecontrol.domain.transaction.Type;
+import dev.dorigo.financecontrol.mappers.TransactionMapper;
 import dev.dorigo.financecontrol.repository.TransactionRepository;
 import dev.dorigo.financecontrol.repository.UserRepository;
 import lombok.RequiredArgsConstructor;
@@ -24,9 +25,12 @@ public class TransactionService {
     private final TransactionRepository transactionRepository;
 
 
-    public Transaction save(Transaction transaction) {
+    public Transaction save(TransactionRequest request, Type type) {
+        Transaction transaction = TransactionMapper.toTransaction(request);
         transaction.setUser(authService.getAuhenticatedUser());
+        transaction.setType(type);
         return repository.save(transaction);
+
     }
 
     public List<Transaction> getAll() {
@@ -50,7 +54,8 @@ public class TransactionService {
     }
 
     public Transaction update(Long id, Transaction UpdateTransaction) {
-        var transaction = repository.findById(id).orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND));
+        var transaction = repository.findById(id)
+                .orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND));
         if(!transaction.getUser().equals(authService.getAuhenticatedUser())){
             throw new ResponseStatusException(HttpStatus.FORBIDDEN);
         }

@@ -3,6 +3,7 @@ package dev.dorigo.financecontrol.controller;
 import dev.dorigo.financecontrol.controller.request.TransactionRequest;
 import dev.dorigo.financecontrol.controller.response.TransactionResponse;
 import dev.dorigo.financecontrol.domain.transaction.Transaction;
+import dev.dorigo.financecontrol.domain.transaction.Type;
 import dev.dorigo.financecontrol.mappers.TransactionMapper;
 import dev.dorigo.financecontrol.service.TransactionService;
 import lombok.RequiredArgsConstructor;
@@ -24,9 +25,23 @@ public class TransactionController {
 
     private final TransactionService transactionService;
 
-    @PostMapping
+    /*
+    * @PostMapping
     public ResponseEntity<TransactionResponse> save(@RequestBody TransactionRequest transactionRequest) {
         Transaction saved = transactionService.save(TransactionMapper.toTransaction(transactionRequest));
+        return ResponseEntity.status(HttpStatus.CREATED).body(TransactionMapper.toResponse(saved));
+    }
+     */
+
+    @PostMapping("/expense")
+    public ResponseEntity<TransactionResponse> saveExpenseTransaction(@RequestBody TransactionRequest transactionRequest) {
+        Transaction saved = transactionService.save(transactionRequest,Type.EXPENSE);
+        return ResponseEntity.status(HttpStatus.CREATED).body(TransactionMapper.toResponse(saved));
+    }
+
+    @PostMapping("/revenue")
+    public ResponseEntity<TransactionResponse> saveRevenueTransaction(@RequestBody TransactionRequest transactionRequest) {
+        Transaction saved = transactionService.save(transactionRequest,Type.REVENUE);
         return ResponseEntity.status(HttpStatus.CREATED).body(TransactionMapper.toResponse(saved));
     }
 
