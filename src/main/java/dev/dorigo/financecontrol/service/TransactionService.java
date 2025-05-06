@@ -53,16 +53,16 @@ public class TransactionService {
         repository.deleteById(id);
     }
 
-    public Transaction update(Long id, Transaction UpdateTransaction) {
+    public Transaction update(Long id, TransactionRequest UpdateTransaction) {
         var transaction = repository.findById(id)
                 .orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND));
         if(!transaction.getUser().equals(authService.getAuhenticatedUser())){
             throw new ResponseStatusException(HttpStatus.FORBIDDEN);
         }
-        transaction.setDescription(UpdateTransaction.getDescription());
-        transaction.setAmount(UpdateTransaction.getAmount());
-        transaction.setDate(UpdateTransaction.getDate());
-        transaction.setType(UpdateTransaction.getType());
+        transaction.setDescription(UpdateTransaction.description());
+        transaction.setAmount(UpdateTransaction.amount());
+        transaction.setDate(UpdateTransaction.date());
+        transaction.setType(UpdateTransaction.type());
         return repository.save(transaction);
     }
 

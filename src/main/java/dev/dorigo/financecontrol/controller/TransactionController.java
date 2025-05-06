@@ -67,13 +67,13 @@ public class TransactionController {
 
     @PutMapping("/{id}")
     public ResponseEntity<TransactionResponse> updateTransactionById(@PathVariable Long id, @RequestBody TransactionRequest transactionRequest) {
-        Transaction transaction = transactionService.update(id, TransactionMapper.toTransaction(transactionRequest));
+        Transaction transaction = transactionService.update(id,transactionRequest);
        return ResponseEntity.ok(TransactionMapper.toResponse(transaction));
     }
 
     @PatchMapping("/{id}")
     public ResponseEntity<TransactionResponse> updateTransaction(@PathVariable Long id, @RequestBody TransactionRequest transactionRequest) {
-        Transaction transaction = transactionService.partialUpdate(id, transactionRequest );
+        Transaction transaction = transactionService.partialUpdate(id, transactionRequest);
         return ResponseEntity.ok(TransactionMapper.toResponse(transaction));
     }
 
