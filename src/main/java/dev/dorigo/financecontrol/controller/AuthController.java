@@ -9,6 +9,11 @@ import dev.dorigo.financecontrol.infra.security.TokenService;
 import dev.dorigo.financecontrol.mappers.UserMapper;
 import dev.dorigo.financecontrol.repository.UserRepository;
 import dev.dorigo.financecontrol.service.UserService;
+import io.swagger.v3.oas.annotations.Operation;
+import io.swagger.v3.oas.annotations.media.Content;
+import io.swagger.v3.oas.annotations.media.Schema;
+import io.swagger.v3.oas.annotations.responses.ApiResponse;
+import io.swagger.v3.oas.annotations.tags.Tag;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
@@ -25,6 +30,7 @@ import org.springframework.web.bind.annotation.RestController;
 @RestController
 @RequestMapping("/auth")
 @RequiredArgsConstructor
+@Tag(name="Auth Controller", description = "Recurso responsavel pelo gerenciamento de login e registro de um usuário.")
 public class AuthController {
 
 
@@ -34,6 +40,9 @@ public class AuthController {
     private final UserService userService;
     private final UserRepository userRepository;
 
+    @Operation(summary = "Realizar o login", description = "Método responsável por realizar o login do usuário")
+    @ApiResponse(responseCode = "201", description = "Login realizado com sucesso",
+    content = @Content(schema = @Schema(implementation = LoginResponseDTO.class)))
     @PostMapping("/login")
     public ResponseEntity<LoginResponseDTO> login(@RequestBody @Valid LoginRequestDTO request) {
         try{
@@ -47,6 +56,9 @@ public class AuthController {
         }
     }
 
+    @Operation(summary = "Realizar o registro", description = "Método responsável por realizar o registro de um novo usuário")
+    @ApiResponse(responseCode = "201", description = "Registro realizado com sucesso",
+            content = @Content(schema = @Schema(implementation = UserResponse.class)))
     @PostMapping("/register")
     public ResponseEntity<UserResponse> register(@RequestBody @Valid UserRequest request){
         if(this.userRepository.findByEmail(request.email()).isPresent()){

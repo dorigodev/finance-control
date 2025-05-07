@@ -30,6 +30,8 @@ public class SecurityConfig {
                        authorizeRequests
                                .requestMatchers(new AntPathRequestMatcher("/auth/login", "POST")).permitAll()
                                .requestMatchers(new AntPathRequestMatcher("/auth/register", "POST")).permitAll()
+                               .requestMatchers(new AntPathRequestMatcher("/api/api-docs/**", "GET")).permitAll()
+                               .requestMatchers(new AntPathRequestMatcher("/swagger/**", "GET")).permitAll()
                         .anyRequest().authenticated()
                 )
                 .addFilterBefore(securityFilter, UsernamePasswordAuthenticationFilter.class)
