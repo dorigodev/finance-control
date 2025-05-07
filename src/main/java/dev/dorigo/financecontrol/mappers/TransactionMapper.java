@@ -12,7 +12,6 @@ public class TransactionMapper {
         return Transaction.builder()
                 .description(request.description())
                 .amount(request.amount())
-                .type(request.type())
                 .date(request.date())
                 .build();
     }

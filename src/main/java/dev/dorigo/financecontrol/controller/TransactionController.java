@@ -1,6 +1,7 @@
 package dev.dorigo.financecontrol.controller;
 
 import dev.dorigo.financecontrol.controller.request.TransactionRequest;
+import dev.dorigo.financecontrol.controller.request.TransactionUpdateRequest;
 import dev.dorigo.financecontrol.controller.response.TransactionResponse;
 import dev.dorigo.financecontrol.controller.response.UserResponse;
 import dev.dorigo.financecontrol.domain.transaction.Transaction;
@@ -105,7 +106,7 @@ public class TransactionController {
     @ApiResponse(responseCode = "200", description = "Transação atualizada com sucesso",
             content=@Content(schema = @Schema(implementation = TransactionResponse.class)))
     @PutMapping("/{id}")
-    public ResponseEntity<TransactionResponse> updateTransactionById(@PathVariable Long id, @RequestBody TransactionRequest transactionRequest) {
+    public ResponseEntity<TransactionResponse> updateTransactionById(@PathVariable Long id, @RequestBody TransactionUpdateRequest transactionRequest) {
         Transaction transaction = transactionService.update(id,transactionRequest);
        return ResponseEntity.ok(TransactionMapper.toResponse(transaction));
     }
@@ -116,7 +117,7 @@ public class TransactionController {
     @ApiResponse(responseCode = "200", description = "Transação atualizada com sucesso",
             content=@Content(schema = @Schema(implementation = TransactionResponse.class)))
     @PatchMapping("/{id}")
-    public ResponseEntity<TransactionResponse> updateTransaction(@PathVariable Long id, @RequestBody TransactionRequest transactionRequest) {
+    public ResponseEntity<TransactionResponse> updateTransaction(@PathVariable Long id, @RequestBody TransactionUpdateRequest transactionRequest) {
         Transaction transaction = transactionService.partialUpdate(id, transactionRequest);
         return ResponseEntity.ok(TransactionMapper.toResponse(transaction));
     }

@@ -1,6 +1,7 @@
 package dev.dorigo.financecontrol.service;
 
 import dev.dorigo.financecontrol.controller.request.TransactionRequest;
+import dev.dorigo.financecontrol.controller.request.TransactionUpdateRequest;
 import dev.dorigo.financecontrol.domain.transaction.Transaction;
 import dev.dorigo.financecontrol.domain.transaction.Type;
 import dev.dorigo.financecontrol.mappers.TransactionMapper;
@@ -53,7 +54,7 @@ public class TransactionService {
         repository.deleteById(id);
     }
 
-    public Transaction update(Long id, TransactionRequest UpdateTransaction) {
+    public Transaction update(Long id, TransactionUpdateRequest UpdateTransaction) {
         var transaction = repository.findById(id)
                 .orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND));
         if(!transaction.getUser().equals(authService.getAuhenticatedUser())){
@@ -66,7 +67,7 @@ public class TransactionService {
         return repository.save(transaction);
     }
 
-    public Transaction partialUpdate(Long id, TransactionRequest UpdateTransaction) {
+    public Transaction partialUpdate(Long id, TransactionUpdateRequest UpdateTransaction) {
         var transaction = repository.findById(id).orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND));
         if(!transaction.getUser().equals(authService.getAuhenticatedUser())){
             throw new ResponseStatusException(HttpStatus.FORBIDDEN);
