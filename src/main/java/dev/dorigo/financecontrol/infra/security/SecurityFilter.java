@@ -1,7 +1,5 @@
 package dev.dorigo.financecontrol.infra.security;
 
-import com.auth0.jwt.exceptions.JWTVerificationException;
-import com.auth0.jwt.exceptions.TokenExpiredException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import dev.dorigo.financecontrol.infra.ErrorResponse;
 import dev.dorigo.financecontrol.repository.UserRepository;

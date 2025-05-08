@@ -3,7 +3,6 @@ package dev.dorigo.financecontrol.controller;
 import dev.dorigo.financecontrol.controller.request.TransactionRequest;
 import dev.dorigo.financecontrol.controller.request.TransactionUpdateRequest;
 import dev.dorigo.financecontrol.controller.response.TransactionResponse;
-import dev.dorigo.financecontrol.controller.response.UserResponse;
 import dev.dorigo.financecontrol.domain.transaction.Transaction;
 import dev.dorigo.financecontrol.domain.transaction.Type;
 import dev.dorigo.financecontrol.mappers.TransactionMapper;
@@ -34,14 +33,6 @@ import java.util.stream.Collectors;
 public class TransactionController {
 
     private final TransactionService transactionService;
-
-    /*
-    * @PostMapping
-    public ResponseEntity<TransactionResponse> save(@RequestBody TransactionRequest transactionRequest) {
-        Transaction saved = transactionService.save(TransactionMapper.toTransaction(transactionRequest));
-        return ResponseEntity.status(HttpStatus.CREATED).body(TransactionMapper.toResponse(saved));
-    }
-     */
 
     @Operation(summary = "Salvar um novo gasto",
             description = "Método responsável por realizar o salvamento de um novo gasto",

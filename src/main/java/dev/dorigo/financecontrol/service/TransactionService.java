@@ -6,7 +6,6 @@ import dev.dorigo.financecontrol.domain.transaction.Transaction;
 import dev.dorigo.financecontrol.domain.transaction.Type;
 import dev.dorigo.financecontrol.mappers.TransactionMapper;
 import dev.dorigo.financecontrol.repository.TransactionRepository;
-import dev.dorigo.financecontrol.repository.UserRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
@@ -22,7 +21,6 @@ public class TransactionService {
 
     private final TransactionRepository repository;
     private final AuthService authService;
-    private final UserRepository userRepository;
     private final TransactionRepository transactionRepository;
 
 
