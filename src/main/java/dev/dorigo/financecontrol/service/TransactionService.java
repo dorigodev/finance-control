@@ -21,8 +21,6 @@ public class TransactionService {
 
     private final TransactionRepository repository;
     private final AuthService authService;
-    private final TransactionRepository transactionRepository;
-
 
     public Transaction save(TransactionRequest request, Type type) {
         Transaction transaction = TransactionMapper.toTransaction(request);
@@ -95,8 +93,8 @@ public class TransactionService {
 
     public BigDecimal calcularSaldo(){
         Long userId = authService.getAuhenticatedUser().getId();
-        BigDecimal expense = transactionRepository.somarPorTipo(Type.EXPENSE, userId);
-        BigDecimal revenue = transactionRepository.somarPorTipo(Type.REVENUE, userId);
+        BigDecimal expense = repository.somarPorTipo(Type.EXPENSE, userId);
+        BigDecimal revenue = repository.somarPorTipo(Type.REVENUE, userId);
         return revenue.subtract(expense);
     }
 
