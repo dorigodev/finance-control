@@ -215,7 +215,7 @@ class TransactionServiceTest {
 
         // Assert
         assertEquals(1, result.size());
-        assertEquals("Transação A", result.get(0).getDescription());
+        assertEquals("Transação A", result.getFirst().getDescription());
         verify(authService).getAuhenticatedUser();
         verify(transactionRepository).buscarFiltradas(dataInicio, dataFim, tipo, valorMin, valorMax, 1L);
 
