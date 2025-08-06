@@ -65,7 +65,7 @@ Para rodar os testes unitários:
 
 ## 📋 Pré-requisitos
 
-- Java 17
+- Java 21
 - Maven 3.8+
 - PostgreSQL rodando na porta padrão (5432)
 
